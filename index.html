@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,23 +13,23 @@
             /*
             ✨ THE MAGIC KNOB IS RIGHT HERE! ✨
             👇 Change the number below to resize everything.
-            ----------------------------------------------------
-            - 1.0 is the default size.
-            - 1.2 will make everything 20% bigger.
-            - 0.8 will make everything 20% smaller.
-            ----------------------------------------------------
             */
-            --scale-factor: 1.0;
+            --scale-factor: 0.9;
 
             /* Do not edit below this line */
-            --main-blue: #0077b6;
-            --main-green: #00bfa5;
-            --main-orange: #ff9f1c;
-            --text-color: #333;
-            --highlight-bg: #fff176;
-            --correct-glow: #00bfa5;
+            --main-blue: #00a8e8;
+            /* Brightened for dark bg */
+            --main-green: #00f5d4;
+            /* Brightened for dark bg */
+            --main-orange: #fca311;
+            --text-color: #f0f0f0;
+            /* Light text color */
+            --highlight-bg: rgba(255, 255, 255, 0.25);
+            --correct-glow: #00f5d4;
         }
-        html, body {
+
+        html,
+        body {
             background-color: transparent;
             font-family: 'Poppins', sans-serif;
             color: var(--text-color);
@@ -41,16 +42,20 @@
             box-sizing: border-box;
             overflow: hidden;
         }
+
         .wrapper {
             width: 100vw;
-            height: 56.25vw; /* 16:9 Aspect Ratio */
+            height: 56.25vw;
+            /* 16:9 Aspect Ratio */
             max-height: 100vh;
-            max-width: 177.78vh; /* 16:9 Aspect Ratio */
+            max-width: 177.78vh;
+            /* 16:9 Aspect Ratio */
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
         }
+
         .activity-container {
             width: 90%;
             height: 90%;
@@ -59,6 +64,7 @@
             align-items: center;
             justify-content: center;
         }
+
         .screen {
             display: none;
             flex-direction: column;
@@ -67,18 +73,23 @@
             animation: fadeIn 0.5s ease;
             width: 100%;
         }
-        .screen.active { display: flex; }
+
+        .screen.active {
+            display: flex;
+        }
 
         .title {
             font-family: 'Baloo 2', cursive;
             font-size: clamp(24px, calc(var(--scale-factor) * 4.5vw), 64px);
-            color: var(--main-blue);
+            color: white;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
             text-align: center;
             margin: 0 0 calc(var(--scale-factor) * 2vh);
         }
+
         .subtitle {
             font-size: clamp(14px, calc(var(--scale-factor) * 1.5vw), 24px);
-            color: #555;
+            color: var(--text-color);
             margin: calc(var(--scale-factor) * -1.5vh) 0 calc(var(--scale-factor) * 2.5vh);
         }
 
@@ -86,16 +97,37 @@
             padding: calc(var(--scale-factor) * 1.5vh) calc(var(--scale-factor) * 3.5vh);
             font-family: 'Baloo 2', cursive;
             font-size: clamp(16px, calc(var(--scale-factor) * 1.8vw), 32px);
-            color: #fff;
-            border: none;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: calc(var(--scale-factor) * 1.5vh);
             cursor: pointer;
-            box-shadow: 0 calc(var(--scale-factor) * 0.5vh) 0 #b36f0a;
-            transition: all 0.1s ease-in-out;
-            background: var(--main-orange);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease-in-out;
+            background: rgba(252, 163, 17, 0.5);
+            /* Semi-transparent orange */
+            backdrop-filter: blur(8px);
         }
-        .button:hover { transform: translateY(calc(var(--scale-factor) * -0.3vh)); box-shadow: 0 calc(var(--scale-factor) * 0.7vh) 0 #b36f0a; }
-        .button:active { transform: translateY(calc(var(--scale-factor) * 0.2vh)); box-shadow: 0 calc(var(--scale-factor) * 0.3vh) 0 #b36f0a; }
+
+        .button:hover {
+            transform: translateY(calc(var(--scale-factor) * -0.3vh));
+            background: rgba(252, 163, 17, 0.7);
+        }
+
+        .button:active {
+            transform: translateY(calc(var(--scale-factor) * 0.2vh));
+        }
+
+        /* --- Glassmorphism Elements --- */
+        .card,
+        .puzzle-slot,
+        #success-poem {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            /* For Safari */
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: calc(var(--scale-factor) * 1.5vh);
+        }
 
         /* --- Learn Screen --- */
         .learn-layout {
@@ -104,39 +136,172 @@
             gap: calc(var(--scale-factor) * 2.5vh);
             width: 100%;
         }
-        .card { 
-            background: transparent;
-            border: 2px solid rgba(0, 0, 0, 0.15);
-            border-radius: calc(var(--scale-factor) * 1.5vh);
+
+        .card {
             padding: calc(var(--scale-factor) * 2.5vh);
         }
-        .poem-card { display: flex; flex-direction: column; justify-content: center; }
-        .poem-card .poem { font-size: clamp(12px, calc(var(--scale-factor) * 1.4vw), 24px); line-height: 2; text-align: center; white-space: pre-wrap; }
-        .poem-card .poem-line { padding: calc(var(--scale-factor) * 0.3vh) calc(var(--scale-factor) * 0.8vh); border-radius: calc(var(--scale-factor) * 0.6vh); transition: background-color 0.3s ease; }
-        .rules-list { list-style: none; padding: 0; margin: 0; }
-        .rule { background: transparent; border: 2px solid #eee; padding: calc(var(--scale-factor) * 1.1vh); margin: calc(var(--scale-factor) * 0.8vh) 0; border-radius: calc(var(--scale-factor) * 1vh); cursor: pointer; transition: all 0.2s ease; font-size: clamp(11px, calc(var(--scale-factor) * 1.2vw), 20px); }
-        .rule:hover { border-color: #ccc; }
-        .rule.active { background-color: var(--highlight-bg); border-color: var(--main-orange); }
-        .rule .line-num { font-weight: 700; color: var(--main-blue); }
+
+        .poem-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .poem-card .poem {
+            font-size: clamp(12px, calc(var(--scale-factor) * 1.4vw), 24px);
+            line-height: 2;
+            text-align: center;
+            white-space: pre-wrap;
+        }
+
+        .poem-card .poem-line {
+            padding: calc(var(--scale-factor) * 0.3vh) calc(var(--scale-factor) * 0.8vh);
+            border-radius: calc(var(--scale-factor) * 0.6vh);
+            transition: background-color 0.3s ease;
+        }
+
+        .rules-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .rule {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: calc(var(--scale-factor) * 1.1vh);
+            margin: calc(var(--scale-factor) * 0.8vh) 0;
+            border-radius: calc(var(--scale-factor) * 1vh);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: clamp(11px, calc(var(--scale-factor) * 1.2vw), 20px);
+        }
+
+        .rule:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .rule.active {
+            background: var(--highlight-bg);
+            border-color: var(--main-orange);
+        }
+
+        .rule .line-num {
+            font-weight: 700;
+            color: var(--main-blue);
+        }
 
         /* --- Build Screen --- */
-        #puzzle-board { display: flex; flex-direction: column; align-items: center; gap: calc(var(--scale-factor) * 0.8vh); width: 60%; }
-        .puzzle-slot { width: 100%; height: calc(var(--scale-factor) * 5vh); background: transparent; border: 2px dashed #ccc; border-radius: calc(var(--scale-factor) * 1.2vh); display: flex; align-items: center; justify-content: center; font-style: italic; color: #888; transition: all 0.3s ease; font-size: clamp(12px, calc(var(--scale-factor) * 1.2vw), 20px); }
-        .puzzle-slot.hover { border-color: var(--main-blue); }
-        .puzzle-slot.correct { background: transparent; border-color: var(--correct-glow); border-style: solid; color: var(--text-color); font-style: normal; }
-        .puzzle-slot.incorrect { animation: shake 0.4s; }
-        #piece-pool { display: flex; justify-content: center; flex-wrap: wrap; gap: calc(var(--scale-factor) * 1vh); padding: calc(var(--scale-factor) * 1.5vh); margin-top: calc(var(--scale-factor) * 2vh); }
-        .puzzle-piece { background-color: #fff9c4; border: 2px solid #fbc02d; padding: calc(var(--scale-factor) * 1vh) calc(var(--scale-factor) * 1.5vh); border-radius: calc(var(--scale-factor) * 1vh); cursor: grab; font-size: clamp(12px, calc(var(--scale-factor) * 1.3vw), 22px); }
-        .puzzle-piece.dragging { opacity: 0.5; }
+        #puzzle-board {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: calc(var(--scale-factor) * 0.8vh);
+            width: 60%;
+        }
+
+        .puzzle-slot {
+            width: 100%;
+            height: calc(var(--scale-factor) * 5vh);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.6);
+            transition: all 0.3s ease;
+            font-size: clamp(12px, calc(var(--scale-factor) * 1.2vw), 20px);
+        }
+
+        .puzzle-slot.hover {
+            border-color: var(--main-blue);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .puzzle-slot.correct {
+            border-color: var(--correct-glow);
+            border-style: solid;
+            color: var(--text-color);
+            font-style: normal;
+        }
+
+        .puzzle-slot.incorrect {
+            animation: shake 0.4s;
+        }
+
+        #piece-pool {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: calc(var(--scale-factor) * 1vh);
+            padding: calc(var(--scale-factor) * 1.5vh);
+            margin-top: calc(var(--scale-factor) * 2vh);
+        }
+
+        .puzzle-piece {
+            background-color: rgba(252, 163, 17, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            color: white;
+            padding: calc(var(--scale-factor) * 1vh) calc(var(--scale-factor) * 1.5vh);
+            border-radius: calc(var(--scale-factor) * 1vh);
+            cursor: grab;
+            font-size: clamp(12px, calc(var(--scale-factor) * 1.3vw), 22px);
+        }
+
+        .puzzle-piece.dragging {
+            opacity: 0.5;
+        }
 
         /* --- Success Screen --- */
-        #success-poem { font-family: 'Baloo 2', cursive; font-size: clamp(14px, calc(var(--scale-factor) * 1.7vw), 30px); line-height: 2; text-align: center; background: transparent; padding: calc(var(--scale-factor) * 2vh); border-radius: calc(var(--scale-factor) * 1.5vh); border: 3px solid var(--correct-glow); }
-        canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
-        
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+        #success-poem {
+            font-family: 'Baloo 2', cursive;
+            font-size: clamp(14px, calc(var(--scale-factor) * 1.7vw), 30px);
+            line-height: 2;
+            text-align: center;
+            padding: calc(var(--scale-factor) * 2vh);
+            border-width: 2px;
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-6px);
+            }
+
+            75% {
+                transform: translateX(6px);
+            }
+        }
     </style>
 </head>
+
 <body>
     <div class="wrapper">
         <div class="activity-container">
@@ -176,13 +341,13 @@
                         </ul>
                     </div>
                 </div>
-                <button class="button" style="margin-top: calc(var(--scale-factor) * 2vh); background:var(--main-green); box-shadow: 0 calc(var(--scale-factor) * 0.5vh) 0 #008170;" onclick="showScreen('build-screen')">Now, Your Turn!</button>
+                <button class="button" style="margin-top: calc(var(--scale-factor) * 2vh); background:rgba(0, 245, 212, 0.5); box-shadow: none;" onclick="showScreen('build-screen')">Now, Your Turn!</button>
             </div>
 
             <!-- SCREEN 3: BUILD -->
             <div class="screen" id="build-screen">
-                 <h1 class="title">Build the Summer & Winter Poem!</h1>
-                 <div id="puzzle-board">
+                <h1 class="title">Build the Summer & Winter Poem!</h1>
+                <div id="puzzle-board">
                     <div class="puzzle-slot" data-correct-id="line-1"></div>
                     <div class="puzzle-slot" data-correct-id="line-2">Line 2: Adjectives</div>
                     <div class="puzzle-slot" data-correct-id="line-3">Line 3: "-ing" Verbs</div>
@@ -190,15 +355,15 @@
                     <div class="puzzle-slot" data-correct-id="line-5">Line 5: "-ing" Verbs</div>
                     <div class="puzzle-slot" data-correct-id="line-6">Line 6: Adjectives</div>
                     <div class="puzzle-slot" data-correct-id="line-7">Line 7: Noun</div>
-                 </div>
-                 <div id="piece-pool"></div>
+                </div>
+                <div id="piece-pool"></div>
             </div>
-            
+
             <!-- SCREEN 4: SUCCESS -->
             <div class="screen" id="success-screen">
-                 <h1 class="title" style="color: var(--correct-glow);">🎉 Well Done! 🎉</h1>
-                 <div id="success-poem"></div>
-                 <button class="button" onclick="resetActivity()">Play Again</button>
+                <h1 class="title" style="color: var(--correct-glow);">🎉 Well Done! 🎉</h1>
+                <div id="success-poem"></div>
+                <button class="button" onclick="resetActivity()">Play Again</button>
             </div>
 
         </div>
@@ -206,9 +371,106 @@
 
     <!-- Confetti script -->
     <script>
-    var confetti={maxCount:150,speed:2,frameInterval:15,alpha:1,gradient:!1,start:null,stop:null,toggle:null,pause:null,resume:null,togglePause:null,remove:null,isPaused:null,isRunning:null};!function(){confetti.start=s,confetti.stop=w,confetti.toggle=function(){e?w():s()},confetti.pause=function(){u=!0},confetti.resume=function(){u=!1},confetti.togglePause=function(){u=!u},confetti.isPaused=function(){return u},confetti.remove=function(){w(),l=[]},confetti.isRunning=function(){return e};var t=window.requestAnimationFrame||window.webkitRequestAnimationFrame||window.mozRequestAnimationFrame||window.oRequestAnimationFrame||window.msRequestAnimationFrame||function(t){return window.setTimeout(t,confetti.frameInterval)},i=document.getElementById("confetti-canvas"),a=i.getContext("2d"),n=[],l=[],o=i.width=window.innerWidth,r=i.height=window.innerHeight;window.addEventListener("resize",function(){o=i.width=window.innerWidth,r=i.height=window.innerHeight},!0);var e=!1,u=!1;function c(t,i){return t.alpha-=i,!(t.alpha<=0)}function d(t){var i=Math.random()*.5+.5;return t.y+=Math.cos(t.degrees)*t.speed*i,t.x+=Math.sin(t.degrees)*t.speed*i,t.degrees+=Math.random()*(Math.random()>.5?1:-1),t}function m(t){var i=document.createElement("canvas"),n=i.getContext("2d");i.width=7,i.height=7;var l=n.createRadialGradient(3.5,3.5,0,3.5,3.5,3.5);return l.addColorStop(0,"white"),l.addColorStop(1,t),n.fillStyle=l,n.fillRect(0,0,7,7),i}function s(s,f,p){l=[];for(var h=0;h<confetti.maxCount;h++)l.push(function(t,i){var n={x:15*Math.random()+o/2-7.5,y:15*Math.random()+r/2-7.5,r:Math.floor(7*Math.random())+2,speed:confetti.speed*Math.random()+1,color:i,alpha:1,degrees:360*Math.random(),gradient:t.gradient};if(t.gradient)for(var l=n.color.length,a=Math.floor(Math.random()*l),c=Math.floor(Math.random()*l);l>1&&a==c;)c=Math.floor(Math.random()*l);return n.color=m(n.color[a],n.color[c]),n}({gradient:confetti.gradient},s));e=!0,u=!1,function s(){if(u)return;t(s),a.clearRect(0,0,o,r);for(var i in l)d(l[i]);for(i in l)a.globalAlpha=l[i].alpha,a.drawImage(l[i].color,l[i].x-l[i].r/2,l[i].y-l[i].r/2,l[i].r,l[i].r);for(i in l)c(l[i],5e-4*Math.random())&&(l.splice(i,1));0==l.length&&w()}}function w(){e=!1}}();
+        var confetti = {
+            maxCount: 150,
+            speed: 2,
+            frameInterval: 15,
+            alpha: 1,
+            gradient: !1,
+            start: null,
+            stop: null,
+            toggle: null,
+            pause: null,
+            resume: null,
+            togglePause: null,
+            remove: null,
+            isPaused: null,
+            isRunning: null
+        };
+        ! function() {
+            confetti.start = s, confetti.stop = w, confetti.toggle = function() {
+                e ? w() : s()
+            }, confetti.pause = function() {
+                u = !0
+            }, confetti.resume = function() {
+                u = !1
+            }, confetti.togglePause = function() {
+                u = !u
+            }, confetti.isPaused = function() {
+                return u
+            }, confetti.remove = function() {
+                w(), l = []
+            }, confetti.isRunning = function() {
+                return e
+            };
+            var t = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(t) {
+                    return window.setTimeout(t, confetti.frameInterval)
+                },
+                i = document.getElementById("confetti-canvas"),
+                a = i.getContext("2d"),
+                n = [],
+                l = [],
+                o = i.width = window.innerWidth,
+                r = i.height = window.innerHeight;
+            window.addEventListener("resize", function() {
+                o = i.width = window.innerWidth, r = i.height = window.innerHeight
+            }, !0);
+            var e = !1,
+                u = !1;
+
+            function c(t, i) {
+                return t.alpha -= i, !(t.alpha <= 0)
+            }
+
+            function d(t) {
+                var i = Math.random() * .5 + .5;
+                return t.y += Math.cos(t.degrees) * t.speed * i, t.x += Math.sin(t.degrees) * t.speed * i, t.degrees += Math.random() * (Math.random() > .5 ? 1 : -1), t
+            }
+
+            function m(t) {
+                var i = document.createElement("canvas"),
+                    n = i.getContext("2d");
+                i.width = 7, i.height = 7;
+                var l = n.createRadialGradient(3.5, 3.5, 0, 3.5, 3.5, 3.5);
+                return l.addColorStop(0, "white"), l.addColorStop(1, t), n.fillStyle = l, n.fillRect(0, 0, 7, 7), i
+            }
+
+            function s(s, f, p) {
+                l = [];
+                for (var h = 0; h < confetti.maxCount; h++) l.push(function(t, i) {
+                    var n = {
+                        x: 15 * Math.random() + o / 2 - 7.5,
+                        y: 15 * Math.random() + r / 2 - 7.5,
+                        r: Math.floor(7 * Math.random()) + 2,
+                        speed: confetti.speed * Math.random() + 1,
+                        color: i,
+                        alpha: 1,
+                        degrees: 360 * Math.random(),
+                        gradient: t.gradient
+                    };
+                    if (t.gradient)
+                        for (var l = n.color.length, a = Math.floor(Math.random() * l), c = Math.floor(Math.random() * l); l > 1 && a == c;) c = Math.floor(Math.random() * l);
+                    return n.color = m(n.color[a], n.color[c]), n
+                }({
+                    gradient: confetti.gradient
+                }, s));
+                e = !0, u = !1,
+                    function s() {
+                        if (u) return;
+                        t(s), a.clearRect(0, 0, o, r);
+                        for (var i in l) d(l[i]);
+                        for (i in l) a.globalAlpha = l[i].alpha, a.drawImage(l[i].color, l[i].x - l[i].r / 2, l[i].y - l[i].r / 2, l[i].r, l[i].r);
+                        for (i in l) c(l[i], 5e-4 * Math.random()) && (l.splice(i, 1));
+                        0 == l.length && w()
+                    }
+            }
+
+            function w() {
+                e = !1
+            }
+        }();
     </script>
-    
+
     <script>
         const screens = document.querySelectorAll('.screen');
 
@@ -225,7 +487,7 @@
                 const lineNum = rule.dataset.rule;
                 rules.forEach(r => r.classList.remove('active'));
                 poemLines.forEach(p => p.style.backgroundColor = 'transparent');
-                
+
                 rule.classList.add('active');
                 document.querySelector(`.poem-line[data-line="${lineNum}"]`).style.backgroundColor = 'var(--highlight-bg)';
             });
@@ -233,11 +495,31 @@
 
         const piecePool = document.getElementById('piece-pool');
         const slots = document.querySelectorAll('.puzzle-slot');
-        const poemData = [
-            { id: 'line-1', text: 'Summer' }, { id: 'line-2', text: 'Golden, humming' },
-            { id: 'line-3', text: 'Blazing, shimmering, blooming' }, { id: 'line-4', text: 'Bees, beaches — frost, silence' },
-            { id: 'line-5', text: 'Drifting, hushing, crystallizing' }, { id: 'line-6', text: 'Pale, sleeping' },
-            { id: 'line-7', text: 'Winter' }
+        const poemData = [{
+                id: 'line-1',
+                text: 'Summer'
+            }, {
+                id: 'line-2',
+                text: 'Golden, humming'
+            },
+            {
+                id: 'line-3',
+                text: 'Blazing, shimmering, blooming'
+            }, {
+                id: 'line-4',
+                text: 'Bees, beaches — frost, silence'
+            },
+            {
+                id: 'line-5',
+                text: 'Drifting, hushing, crystallizing'
+            }, {
+                id: 'line-6',
+                text: 'Pale, sleeping'
+            },
+            {
+                id: 'line-7',
+                text: 'Winter'
+            }
         ];
 
         function setupPuzzle() {
@@ -269,7 +551,10 @@
         }
 
         slots.forEach(slot => {
-            slot.addEventListener('dragover', e => { e.preventDefault(); if (slot.children.length === 0 && !slot.classList.contains('correct')) slot.classList.add('hover'); });
+            slot.addEventListener('dragover', e => {
+                e.preventDefault();
+                if (slot.children.length === 0 && !slot.classList.contains('correct')) slot.classList.add('hover');
+            });
             slot.addEventListener('dragleave', () => slot.classList.remove('hover'));
             slot.addEventListener('drop', e => {
                 e.preventDefault();
@@ -294,23 +579,28 @@
         function checkCompletion() {
             if (document.querySelectorAll('.puzzle-slot.correct').length === slots.length) {
                 const finalPoemLines = [];
-                slots.forEach(slot => { finalPoemLines.push(slot.textContent); });
+                slots.forEach(slot => {
+                    finalPoemLines.push(slot.textContent);
+                });
                 const finalPoemHtml = finalPoemLines.map(line => `<span>${line}</span>`).join('<br>');
 
                 document.getElementById('success-poem').innerHTML = finalPoemHtml;
                 showScreen('success-screen');
-                confetti.start(['#FFC700', '#FF9F1C', '#00BFA5', '#0077B6']);
+                confetti.start(['#fca311', '#00f5d4', '#00a8e8']);
                 setTimeout(() => confetti.stop(), 3000);
             }
         }
-        
+
         function resetActivity() {
             slots.forEach(slot => {
-                if(slot.dataset.correctId !== 'line-1') {
+                if (slot.dataset.correctId !== 'line-1') {
                     const placeholderText = {
-                        'line-2': 'Line 2: Adjectives', 'line-3': 'Line 3: "-ing" Verbs',
-                        'line-4': 'Line 4: Nouns', 'line-5': 'Line 5: "-ing" Verbs',
-                        'line-6': 'Line 6: Adjectives', 'line-7': 'Line 7: Noun'
+                        'line-2': 'Line 2: Adjectives',
+                        'line-3': 'Line 3: "-ing" Verbs',
+                        'line-4': 'Line 4: Nouns',
+                        'line-5': 'Line 5: "-ing" Verbs',
+                        'line-6': 'Line 6: Adjectives',
+                        'line-7': 'Line 7: Noun'
                     };
                     slot.innerHTML = placeholderText[slot.dataset.correctId];
                     slot.classList.remove('correct');
@@ -323,4 +613,5 @@
         setupPuzzle();
     </script>
 </body>
+
 </html>
