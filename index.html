@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +9,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Baloo+2:wght@800&display=swap" rel="stylesheet">
     <style>
         :root {
+            /*
+            ✨ THE MAGIC KNOB IS RIGHT HERE! ✨
+            👇 Change the number below to resize everything.
+            ----------------------------------------------------
+            - 1.0 is the default size.
+            - 1.2 will make everything 20% bigger.
+            - 0.8 will make everything 20% smaller.
+            ----------------------------------------------------
+            */
+            --scale-factor: 1.0;
+
+            /* Do not edit below this line */
             --main-blue: #0077b6;
             --main-green: #00bfa5;
             --main-orange: #ff9f1c;
@@ -17,426 +28,188 @@
             --highlight-bg: #fff176;
             --correct-glow: #00bfa5;
         }
-
-        html,
-        body {
+        html, body {
             background-color: transparent;
             font-family: 'Poppins', sans-serif;
             color: var(--text-color);
             height: 100%;
             margin: 0;
-            padding: 20px;
+            padding: 0;
             display: flex;
             align-items: center;
             justify-content: center;
             box-sizing: border-box;
             overflow: hidden;
         }
-
-        .activity-container {
-            width: 100%;
-            max-width: 1000px;
+        .wrapper {
+            width: 100vw;
+            height: 56.25vw; /* 16:9 Aspect Ratio */
+            max-height: 100vh;
+            max-width: 177.78vh; /* 16:9 Aspect Ratio */
+            display: flex;
+            align-items: center;
+            justify-content: center;
             position: relative;
         }
-
+        .activity-container {
+            width: 90%;
+            height: 90%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
         .screen {
             display: none;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             animation: fadeIn 0.5s ease;
+            width: 100%;
         }
-
-        .screen.active {
-            display: flex;
-        }
+        .screen.active { display: flex; }
 
         .title {
             font-family: 'Baloo 2', cursive;
-            font-size: 3.2em;
+            font-size: clamp(24px, calc(var(--scale-factor) * 4.5vw), 64px);
             color: var(--main-blue);
             text-align: center;
-            margin: 0 0 20px 0;
+            margin: 0 0 calc(var(--scale-factor) * 2vh);
         }
-
         .subtitle {
-            font-size: 1.2em;
+            font-size: clamp(14px, calc(var(--scale-factor) * 1.5vw), 24px);
             color: #555;
-            margin: -15px 0 25px 0;
+            margin: calc(var(--scale-factor) * -1.5vh) 0 calc(var(--scale-factor) * 2.5vh);
         }
 
         .button {
-            padding: 15px 35px;
+            padding: calc(var(--scale-factor) * 1.5vh) calc(var(--scale-factor) * 3.5vh);
             font-family: 'Baloo 2', cursive;
-            font-size: 1.5em;
+            font-size: clamp(16px, calc(var(--scale-factor) * 1.8vw), 32px);
             color: #fff;
             border: none;
-            border-radius: 15px;
-            text-decoration: none;
+            border-radius: calc(var(--scale-factor) * 1.5vh);
             cursor: pointer;
-            box-shadow: 0 5px 0 #b36f0a;
+            box-shadow: 0 calc(var(--scale-factor) * 0.5vh) 0 #b36f0a;
             transition: all 0.1s ease-in-out;
             background: var(--main-orange);
         }
-
-        .button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 7px 0 #b36f0a;
-        }
-
-        .button:active {
-            transform: translateY(2px);
-            box-shadow: 0 3px 0 #b36f0a;
-        }
+        .button:hover { transform: translateY(calc(var(--scale-factor) * -0.3vh)); box-shadow: 0 calc(var(--scale-factor) * 0.7vh) 0 #b36f0a; }
+        .button:active { transform: translateY(calc(var(--scale-factor) * 0.2vh)); box-shadow: 0 calc(var(--scale-factor) * 0.3vh) 0 #b36f0a; }
 
         /* --- Learn Screen --- */
         .learn-layout {
             display: grid;
             grid-template-columns: 1.2fr 1fr;
-            gap: 25px;
+            gap: calc(var(--scale-factor) * 2.5vh);
             width: 100%;
         }
-
-        .card {
+        .card { 
             background: transparent;
             border: 2px solid rgba(0, 0, 0, 0.15);
-            border-radius: 15px;
-            padding: 25px;
+            border-radius: calc(var(--scale-factor) * 1.5vh);
+            padding: calc(var(--scale-factor) * 2.5vh);
         }
-
-        .poem-card {
-            display: flex;
-            /* FIX 1: Added flex properties */
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .poem-card .poem {
-            font-size: 1.25em;
-            line-height: 2;
-            text-align: center;
-            white-space: pre-wrap;
-        }
-
-        .poem-card .poem-line {
-            padding: 3px 8px;
-            border-radius: 6px;
-            transition: background-color 0.3s ease;
-        }
-
-        .rules-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .rule {
-            background: transparent;
-            border: 2px solid #eee;
-            padding: 13px;
-            margin: 8px 0;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .rule:hover {
-            border-color: #ccc;
-        }
-
-        .rule.active {
-            background-color: var(--highlight-bg);
-            border-color: var(--main-orange);
-        }
-
-        .rule .line-num {
-            font-weight: 700;
-            color: var(--main-blue);
-        }
+        .poem-card { display: flex; flex-direction: column; justify-content: center; }
+        .poem-card .poem { font-size: clamp(12px, calc(var(--scale-factor) * 1.4vw), 24px); line-height: 2; text-align: center; white-space: pre-wrap; }
+        .poem-card .poem-line { padding: calc(var(--scale-factor) * 0.3vh) calc(var(--scale-factor) * 0.8vh); border-radius: calc(var(--scale-factor) * 0.6vh); transition: background-color 0.3s ease; }
+        .rules-list { list-style: none; padding: 0; margin: 0; }
+        .rule { background: transparent; border: 2px solid #eee; padding: calc(var(--scale-factor) * 1.1vh); margin: calc(var(--scale-factor) * 0.8vh) 0; border-radius: calc(var(--scale-factor) * 1vh); cursor: pointer; transition: all 0.2s ease; font-size: clamp(11px, calc(var(--scale-factor) * 1.2vw), 20px); }
+        .rule:hover { border-color: #ccc; }
+        .rule.active { background-color: var(--highlight-bg); border-color: var(--main-orange); }
+        .rule .line-num { font-weight: 700; color: var(--main-blue); }
 
         /* --- Build Screen --- */
-        #puzzle-board {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            width: 60%;
-        }
-
-        .puzzle-slot {
-            width: 100%;
-            height: 50px;
-            background: transparent;
-            border: 2px dashed #ccc;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-style: italic;
-            color: #888;
-            transition: all 0.3s ease;
-        }
-
-        .puzzle-slot.hover {
-            border-color: var(--main-blue);
-        }
-
-        .puzzle-slot.correct {
-            background: transparent;
-            border-color: var(--correct-glow);
-            border-style: solid;
-            color: var(--text-color);
-            font-style: normal;
-        }
-
-        .puzzle-slot.incorrect {
-            animation: shake 0.4s;
-        }
-
-        #piece-pool {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 10px;
-            padding: 15px;
-            margin-top: 20px;
-        }
-
-        .puzzle-piece {
-            background-color: #fff9c4;
-            border: 2px solid #fbc02d;
-            padding: 10px 15px;
-            border-radius: 10px;
-            cursor: grab;
-            font-size: 1.1em;
-        }
-
-        .puzzle-piece.dragging {
-            opacity: 0.5;
-        }
+        #puzzle-board { display: flex; flex-direction: column; align-items: center; gap: calc(var(--scale-factor) * 0.8vh); width: 60%; }
+        .puzzle-slot { width: 100%; height: calc(var(--scale-factor) * 5vh); background: transparent; border: 2px dashed #ccc; border-radius: calc(var(--scale-factor) * 1.2vh); display: flex; align-items: center; justify-content: center; font-style: italic; color: #888; transition: all 0.3s ease; font-size: clamp(12px, calc(var(--scale-factor) * 1.2vw), 20px); }
+        .puzzle-slot.hover { border-color: var(--main-blue); }
+        .puzzle-slot.correct { background: transparent; border-color: var(--correct-glow); border-style: solid; color: var(--text-color); font-style: normal; }
+        .puzzle-slot.incorrect { animation: shake 0.4s; }
+        #piece-pool { display: flex; justify-content: center; flex-wrap: wrap; gap: calc(var(--scale-factor) * 1vh); padding: calc(var(--scale-factor) * 1.5vh); margin-top: calc(var(--scale-factor) * 2vh); }
+        .puzzle-piece { background-color: #fff9c4; border: 2px solid #fbc02d; padding: calc(var(--scale-factor) * 1vh) calc(var(--scale-factor) * 1.5vh); border-radius: calc(var(--scale-factor) * 1vh); cursor: grab; font-size: clamp(12px, calc(var(--scale-factor) * 1.3vw), 22px); }
+        .puzzle-piece.dragging { opacity: 0.5; }
 
         /* --- Success Screen --- */
-        #success-poem {
-            font-family: 'Baloo 2', cursive;
-            font-size: 1.5em;
-            line-height: 2;
-            text-align: center;
-            background: transparent;
-            padding: 20px;
-            border-radius: 15px;
-            border: 3px solid var(--correct-glow);
-        }
-
-        canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        @keyframes shake {
-
-            0%,
-            100% {
-                transform: translateX(0);
-            }
-
-            25% {
-                transform: translateX(-6px);
-            }
-
-            75% {
-                transform: translateX(6px);
-            }
-        }
+        #success-poem { font-family: 'Baloo 2', cursive; font-size: clamp(14px, calc(var(--scale-factor) * 1.7vw), 30px); line-height: 2; text-align: center; background: transparent; padding: calc(var(--scale-factor) * 2vh); border-radius: calc(var(--scale-factor) * 1.5vh); border: 3px solid var(--correct-glow); }
+        canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
     </style>
 </head>
-
 <body>
-    <canvas id="confetti-canvas"></canvas>
+    <div class="wrapper">
+        <div class="activity-container">
+            <canvas id="confetti-canvas"></canvas>
 
-    <div class="activity-container">
-
-        <!-- SCREEN 1: START -->
-        <div class="screen active" id="start-screen">
-            <h1 class="title">💎 Diamante Poem Challenge 💎</h1>
-            <p class="subtitle">First, let's learn the pattern. Then, build your own!</p>
-            <button class="button" onclick="showScreen('learn-screen')">Start Learning</button>
-        </div>
-
-        <!-- SCREEN 2: LEARN -->
-        <div class="screen" id="learn-screen">
-            <h1 class="title">This is the Pattern</h1>
-            <div class="learn-layout">
-                <div class="card poem-card">
-                    <p class="poem">
-                        <span class="poem-line" data-line="1">Earth</span>
-                        <span class="poem-line" data-line="2">Lush, breathing</span>
-                        <span class="poem-line" data-line="3">Whispering, cradling, teeming</span>
-                        <span class="poem-line" data-line="4">Forests, oceans — canyons, dust</span>
-                        <span class="poem-line" data-line="5">Rusting, orbiting, waiting</span>
-                        <span class="poem-line" data-line="6">Barren, distant</span>
-                        <span class="poem-line" data-line="7">Mars</span>
-                    </p>
-                </div>
-                <div class="card rules-card">
-                    <ul class="rules-list">
-                        <li class="rule" data-rule="1"><span class="line-num">Line 1:</span> One Noun</li>
-                        <li class="rule" data-rule="2"><span class="line-num">Line 2:</span> Two Adjectives</li>
-                        <li class="rule" data-rule="3"><span class="line-num">Line 3:</span> Three "-ing" Verbs</li>
-                        <li class="rule" data-rule="4"><span class="line-num">Line 4:</span> Four Nouns</li>
-                        <li class="rule" data-rule="5"><span class="line-num">Line 5:</span> Three "-ing" Verbs</li>
-                        <li class="rule" data-rule="6"><span class="line-num">Line 6:</span> Two Adjectives</li>
-                        <li class="rule" data-rule="7"><span class="line-num">Line 7:</span> One Noun (Opposite)</li>
-                    </ul>
-                </div>
+            <!-- SCREEN 1: START -->
+            <div class="screen active" id="start-screen">
+                <h1 class="title">💎 Diamante Poem Challenge 💎</h1>
+                <p class="subtitle">First, let's learn the pattern. Then, build your own!</p>
+                <button class="button" onclick="showScreen('learn-screen')">Start Learning</button>
             </div>
-            <button class="button" style="margin-top:20px; background:var(--main-green); box-shadow: 0 5px 0 #008170;" onclick="showScreen('build-screen')">Now, Your Turn!</button>
-        </div>
 
-        <!-- SCREEN 3: BUILD -->
-        <div class="screen" id="build-screen">
-            <h1 class="title">Build the Summer & Winter Poem!</h1>
-            <div id="puzzle-board">
-                <div class="puzzle-slot" data-correct-id="line-1">Line 1: Noun</div>
-                <div class="puzzle-slot" data-correct-id="line-2">Line 2: Adjectives</div>
-                <div class="puzzle-slot" data-correct-id="line-3">Line 3: "-ing" Verbs</div>
-                <div class="puzzle-slot" data-correct-id="line-4">Line 4: Nouns</div>
-                <div class="puzzle-slot" data-correct-id="line-5">Line 5: "-ing" Verbs</div>
-                <div class="puzzle-slot" data-correct-id="line-6">Line 6: Adjectives</div>
-                <div class="puzzle-slot" data-correct-id="line-7">Line 7: Noun</div>
+            <!-- SCREEN 2: LEARN -->
+            <div class="screen" id="learn-screen">
+                <h1 class="title">This is the Pattern</h1>
+                <div class="learn-layout">
+                    <div class="card poem-card">
+                        <p class="poem">
+                            <span class="poem-line" data-line="1">Earth</span>
+                            <span class="poem-line" data-line="2">Lush, breathing</span>
+                            <span class="poem-line" data-line="3">Whispering, cradling, teeming</span>
+                            <span class="poem-line" data-line="4">Forests, oceans — canyons, dust</span>
+                            <span class="poem-line" data-line="5">Rusting, orbiting, waiting</span>
+                            <span class="poem-line" data-line="6">Barren, distant</span>
+                            <span class="poem-line" data-line="7">Mars</span>
+                        </p>
+                    </div>
+                    <div class="card rules-card">
+                        <ul class="rules-list">
+                            <li class="rule" data-rule="1"><span class="line-num">Line 1:</span> One Noun</li>
+                            <li class="rule" data-rule="2"><span class="line-num">Line 2:</span> Two Adjectives</li>
+                            <li class="rule" data-rule="3"><span class="line-num">Line 3:</span> Three "-ing" Verbs</li>
+                            <li class="rule" data-rule="4"><span class="line-num">Line 4:</span> Four Nouns</li>
+                            <li class="rule" data-rule="5"><span class="line-num">Line 5:</span> Three "-ing" Verbs</li>
+                            <li class="rule" data-rule="6"><span class="line-num">Line 6:</span> Two Adjectives</li>
+                            <li class="rule" data-rule="7"><span class="line-num">Line 7:</span> One Noun (Opposite)</li>
+                        </ul>
+                    </div>
+                </div>
+                <button class="button" style="margin-top: calc(var(--scale-factor) * 2vh); background:var(--main-green); box-shadow: 0 calc(var(--scale-factor) * 0.5vh) 0 #008170;" onclick="showScreen('build-screen')">Now, Your Turn!</button>
             </div>
-            <div id="piece-pool"></div>
-        </div>
 
-        <!-- SCREEN 4: SUCCESS -->
-        <div class="screen" id="success-screen">
-            <h1 class="title" style="color: var(--correct-glow);">🎉 Well Done! 🎉</h1>
-            <div id="success-poem"></div>
-            <button class="button" onclick="resetActivity()">Play Again</button>
-        </div>
+            <!-- SCREEN 3: BUILD -->
+            <div class="screen" id="build-screen">
+                 <h1 class="title">Build the Summer & Winter Poem!</h1>
+                 <div id="puzzle-board">
+                    <div class="puzzle-slot" data-correct-id="line-1"></div>
+                    <div class="puzzle-slot" data-correct-id="line-2">Line 2: Adjectives</div>
+                    <div class="puzzle-slot" data-correct-id="line-3">Line 3: "-ing" Verbs</div>
+                    <div class="puzzle-slot" data-correct-id="line-4">Line 4: Nouns</div>
+                    <div class="puzzle-slot" data-correct-id="line-5">Line 5: "-ing" Verbs</div>
+                    <div class="puzzle-slot" data-correct-id="line-6">Line 6: Adjectives</div>
+                    <div class="puzzle-slot" data-correct-id="line-7">Line 7: Noun</div>
+                 </div>
+                 <div id="piece-pool"></div>
+            </div>
+            
+            <!-- SCREEN 4: SUCCESS -->
+            <div class="screen" id="success-screen">
+                 <h1 class="title" style="color: var(--correct-glow);">🎉 Well Done! 🎉</h1>
+                 <div id="success-poem"></div>
+                 <button class="button" onclick="resetActivity()">Play Again</button>
+            </div>
 
+        </div>
     </div>
 
     <!-- Confetti script -->
     <script>
-        var confetti = {
-            maxCount: 150,
-            speed: 2,
-            frameInterval: 15,
-            alpha: 1,
-            gradient: !1,
-            start: null,
-            stop: null,
-            toggle: null,
-            pause: null,
-            resume: null,
-            togglePause: null,
-            remove: null,
-            isPaused: null,
-            isRunning: null
-        };
-        ! function() {
-            confetti.start = s, confetti.stop = w, confetti.toggle = function() {
-                e ? w() : s()
-            }, confetti.pause = function() {
-                u = !0
-            }, confetti.resume = function() {
-                u = !1
-            }, confetti.togglePause = function() {
-                u = !u
-            }, confetti.isPaused = function() {
-                return u
-            }, confetti.remove = function() {
-                w(), l = []
-            }, confetti.isRunning = function() {
-                return e
-            };
-            var t = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(t) {
-                    return window.setTimeout(t, confetti.frameInterval)
-                },
-                i = document.getElementById("confetti-canvas"),
-                a = i.getContext("2d"),
-                n = [],
-                l = [],
-                o = i.width = window.innerWidth,
-                r = i.height = window.innerHeight;
-            window.addEventListener("resize", function() {
-                o = i.width = window.innerWidth, r = i.height = window.innerHeight
-            }, !0);
-            var e = !1,
-                u = !1;
-
-            function c(t, i) {
-                return t.alpha -= i, !(t.alpha <= 0)
-            }
-
-            function d(t) {
-                var i = Math.random() * .5 + .5;
-                return t.y += Math.cos(t.degrees) * t.speed * i, t.x += Math.sin(t.degrees) * t.speed * i, t.degrees += Math.random() * (Math.random() > .5 ? 1 : -1), t
-            }
-
-            function m(t) {
-                var i = document.createElement("canvas"),
-                    n = i.getContext("2d");
-                i.width = 7, i.height = 7;
-                var l = n.createRadialGradient(3.5, 3.5, 0, 3.5, 3.5, 3.5);
-                return l.addColorStop(0, "white"), l.addColorStop(1, t), n.fillStyle = l, n.fillRect(0, 0, 7, 7), i
-            }
-
-            function s(s, f, p) {
-                l = [];
-                for (var h = 0; h < confetti.maxCount; h++) l.push(function(t, i) {
-                    var n = {
-                        x: 15 * Math.random() + o / 2 - 7.5,
-                        y: 15 * Math.random() + r / 2 - 7.5,
-                        r: Math.floor(7 * Math.random()) + 2,
-                        speed: confetti.speed * Math.random() + 1,
-                        color: i,
-                        alpha: 1,
-                        degrees: 360 * Math.random(),
-                        gradient: t.gradient
-                    };
-                    if (t.gradient)
-                        for (var l = n.color.length, a = Math.floor(Math.random() * l), c = Math.floor(Math.random() * l); l > 1 && a == c;) c = Math.floor(Math.random() * l);
-                    return n.color = m(n.color[a], n.color[c]), n
-                }({
-                    gradient: confetti.gradient
-                }, s));
-                e = !0, u = !1,
-                    function s() {
-                        if (u) return;
-                        t(s), a.clearRect(0, 0, o, r);
-                        for (var i in l) d(l[i]);
-                        for (i in l) a.globalAlpha = l[i].alpha, a.drawImage(l[i].color, l[i].x - l[i].r / 2, l[i].y - l[i].r / 2, l[i].r, l[i].r);
-                        for (i in l) c(l[i], 5e-4 * Math.random()) && (l.splice(i, 1));
-                        0 == l.length && w()
-                    }
-            }
-
-            function w() {
-                e = !1
-            }
-        }();
+    var confetti={maxCount:150,speed:2,frameInterval:15,alpha:1,gradient:!1,start:null,stop:null,toggle:null,pause:null,resume:null,togglePause:null,remove:null,isPaused:null,isRunning:null};!function(){confetti.start=s,confetti.stop=w,confetti.toggle=function(){e?w():s()},confetti.pause=function(){u=!0},confetti.resume=function(){u=!1},confetti.togglePause=function(){u=!u},confetti.isPaused=function(){return u},confetti.remove=function(){w(),l=[]},confetti.isRunning=function(){return e};var t=window.requestAnimationFrame||window.webkitRequestAnimationFrame||window.mozRequestAnimationFrame||window.oRequestAnimationFrame||window.msRequestAnimationFrame||function(t){return window.setTimeout(t,confetti.frameInterval)},i=document.getElementById("confetti-canvas"),a=i.getContext("2d"),n=[],l=[],o=i.width=window.innerWidth,r=i.height=window.innerHeight;window.addEventListener("resize",function(){o=i.width=window.innerWidth,r=i.height=window.innerHeight},!0);var e=!1,u=!1;function c(t,i){return t.alpha-=i,!(t.alpha<=0)}function d(t){var i=Math.random()*.5+.5;return t.y+=Math.cos(t.degrees)*t.speed*i,t.x+=Math.sin(t.degrees)*t.speed*i,t.degrees+=Math.random()*(Math.random()>.5?1:-1),t}function m(t){var i=document.createElement("canvas"),n=i.getContext("2d");i.width=7,i.height=7;var l=n.createRadialGradient(3.5,3.5,0,3.5,3.5,3.5);return l.addColorStop(0,"white"),l.addColorStop(1,t),n.fillStyle=l,n.fillRect(0,0,7,7),i}function s(s,f,p){l=[];for(var h=0;h<confetti.maxCount;h++)l.push(function(t,i){var n={x:15*Math.random()+o/2-7.5,y:15*Math.random()+r/2-7.5,r:Math.floor(7*Math.random())+2,speed:confetti.speed*Math.random()+1,color:i,alpha:1,degrees:360*Math.random(),gradient:t.gradient};if(t.gradient)for(var l=n.color.length,a=Math.floor(Math.random()*l),c=Math.floor(Math.random()*l);l>1&&a==c;)c=Math.floor(Math.random()*l);return n.color=m(n.color[a],n.color[c]),n}({gradient:confetti.gradient},s));e=!0,u=!1,function s(){if(u)return;t(s),a.clearRect(0,0,o,r);for(var i in l)d(l[i]);for(i in l)a.globalAlpha=l[i].alpha,a.drawImage(l[i].color,l[i].x-l[i].r/2,l[i].y-l[i].r/2,l[i].r,l[i].r);for(i in l)c(l[i],5e-4*Math.random())&&(l.splice(i,1));0==l.length&&w()}}function w(){e=!1}}();
     </script>
-
+    
     <script>
-        // --- Main Activity Script ---
         const screens = document.querySelectorAll('.screen');
 
         function showScreen(screenId) {
@@ -444,7 +217,6 @@
             document.getElementById(screenId).classList.add('active');
         }
 
-        // --- Learn Screen Logic ---
         const rules = document.querySelectorAll('.rule');
         const poemLines = document.querySelectorAll('.poem-line');
 
@@ -453,52 +225,29 @@
                 const lineNum = rule.dataset.rule;
                 rules.forEach(r => r.classList.remove('active'));
                 poemLines.forEach(p => p.style.backgroundColor = 'transparent');
-
+                
                 rule.classList.add('active');
                 document.querySelector(`.poem-line[data-line="${lineNum}"]`).style.backgroundColor = 'var(--highlight-bg)';
             });
         });
 
-        // --- Build Screen Logic ---
         const piecePool = document.getElementById('piece-pool');
         const slots = document.querySelectorAll('.puzzle-slot');
-        const poemData = [{
-                id: 'line-1',
-                text: 'Summer'
-            }, {
-                id: 'line-2',
-                text: 'Golden, humming'
-            },
-            {
-                id: 'line-3',
-                text: 'Blazing, shimmering, blooming'
-            }, {
-                id: 'line-4',
-                text: 'Bees, beaches — frost, silence'
-            },
-            {
-                id: 'line-5',
-                text: 'Drifting, hushing, crystallizing'
-            }, {
-                id: 'line-6',
-                text: 'Pale, sleeping'
-            },
-            {
-                id: 'line-7',
-                text: 'Winter'
-            }
+        const poemData = [
+            { id: 'line-1', text: 'Summer' }, { id: 'line-2', text: 'Golden, humming' },
+            { id: 'line-3', text: 'Blazing, shimmering, blooming' }, { id: 'line-4', text: 'Bees, beaches — frost, silence' },
+            { id: 'line-5', text: 'Drifting, hushing, crystallizing' }, { id: 'line-6', text: 'Pale, sleeping' },
+            { id: 'line-7', text: 'Winter' }
         ];
 
         function setupPuzzle() {
             piecePool.innerHTML = '';
 
-            // FIX 2: Pre-populate "Summer" as a sample answer
             const firstLineData = poemData.find(line => line.id === 'line-1');
             const firstSlot = document.querySelector('.puzzle-slot[data-correct-id="line-1"]');
             firstSlot.textContent = firstLineData.text;
             firstSlot.classList.add('correct');
 
-            // Create draggable pieces for the rest of the lines
             const remainingLines = poemData.filter(line => line.id !== 'line-1');
             remainingLines.sort(() => Math.random() - 0.5).forEach(line => {
                 const piece = document.createElement('div');
@@ -520,10 +269,7 @@
         }
 
         slots.forEach(slot => {
-            slot.addEventListener('dragover', e => {
-                e.preventDefault();
-                if (slot.children.length === 0) slot.classList.add('hover');
-            });
+            slot.addEventListener('dragover', e => { e.preventDefault(); if (slot.children.length === 0 && !slot.classList.contains('correct')) slot.classList.add('hover'); });
             slot.addEventListener('dragleave', () => slot.classList.remove('hover'));
             slot.addEventListener('drop', e => {
                 e.preventDefault();
@@ -532,7 +278,7 @@
                 if (!draggedPiece || slot.children.length > 0) return;
 
                 if (slot.dataset.correctId === draggedPiece.id) {
-                    slot.textContent = ''; // Clear placeholder text
+                    slot.textContent = '';
                     slot.appendChild(draggedPiece);
                     slot.classList.add('correct');
                     draggedPiece.draggable = false;
@@ -547,11 +293,8 @@
 
         function checkCompletion() {
             if (document.querySelectorAll('.puzzle-slot.correct').length === slots.length) {
-                // FIX 3: Reconstruct the poem in the correct order from the puzzle board
                 const finalPoemLines = [];
-                slots.forEach(slot => {
-                    finalPoemLines.push(slot.textContent);
-                });
+                slots.forEach(slot => { finalPoemLines.push(slot.textContent); });
                 const finalPoemHtml = finalPoemLines.map(line => `<span>${line}</span>`).join('<br>');
 
                 document.getElementById('success-poem').innerHTML = finalPoemHtml;
@@ -560,12 +303,16 @@
                 setTimeout(() => confetti.stop(), 3000);
             }
         }
-
+        
         function resetActivity() {
             slots.forEach(slot => {
-                // Reset all slots except the pre-filled one
-                if (slot.dataset.correctId !== 'line-1') {
-                    slot.innerHTML = `Line ${slot.dataset.correctId.split('-')[1]}: ...`;
+                if(slot.dataset.correctId !== 'line-1') {
+                    const placeholderText = {
+                        'line-2': 'Line 2: Adjectives', 'line-3': 'Line 3: "-ing" Verbs',
+                        'line-4': 'Line 4: Nouns', 'line-5': 'Line 5: "-ing" Verbs',
+                        'line-6': 'Line 6: Adjectives', 'line-7': 'Line 7: Noun'
+                    };
+                    slot.innerHTML = placeholderText[slot.dataset.correctId];
                     slot.classList.remove('correct');
                 }
             });
@@ -573,9 +320,7 @@
             showScreen('start-screen');
         }
 
-        // Initial setup
         setupPuzzle();
     </script>
 </body>
-
 </html>
